@@ -24,8 +24,10 @@ public class FileServerHandler extends SimpleChannelInboundHandler<String> {
 			RandomAccessFile randomAccessFile = new RandomAccessFile(msg, "r");
 			FileRegion region = new DefaultFileRegion(randomAccessFile.getChannel(), 0, randomAccessFile.length());
 			ctx.write(region);
+			
 			//写入行分隔符并move offset
 			ctx.writeAndFlush(CR);
+			
 			randomAccessFile.close();
 		} else {
 			ctx.writeAndFlush("file not exist : " + msg + CR);
